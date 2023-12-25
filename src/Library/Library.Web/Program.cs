@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
+using Library.Application;
+using Library.Infrastructure;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((ctx, lc) => lc
@@ -15,22 +18,28 @@ builder.Host.UseSerilog((ctx, lc) => lc
     .ReadFrom.Configuration(builder.Configuration));
 try
 {
-    builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-    builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
-    {
-        containerBuilder.RegisterModule(new WebModule());
-    });
-    // Add services to the container.
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(connectionString));
-    builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+	var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+	var migrationAssembly = Assembly.GetExecutingAssembly().FullName;
 
-    builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-        .AddEntityFrameworkStores<ApplicationDbContext>();
-    builder.Services.AddControllersWithViews();
+	builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+	builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+	{
+		containerBuilder.RegisterModule(new ApplicationModule());
+		containerBuilder.RegisterModule(new InfrastructureModule(connectionString, migrationAssembly));
+		containerBuilder.RegisterModule(new WebModule());
+	});
 
-    var app = builder.Build();
+	// Add services to the container.
+	builder.Services.AddDbContext<ApplicationDbContext>(options =>
+		options.UseSqlServer(connectionString,
+		(m) => m.MigrationsAssembly(migrationAssembly)));
+	builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+	builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+		.AddEntityFrameworkStores<ApplicationDbContext>();
+	builder.Services.AddControllersWithViews();
+
+	var app = builder.Build();
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
