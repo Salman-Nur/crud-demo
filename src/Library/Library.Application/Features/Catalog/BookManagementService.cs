@@ -28,25 +28,33 @@ namespace Library.Application.Features.Catalog
             await _unitOfWork.SaveAsync();
         }
 
-        public Task DeleteBookAsync(Guid id)
+        public async Task DeleteBookAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.BookRepository.RemoveAsync(id);
+            await _unitOfWork.SaveAsync();
         }
 
-        public Task<Book> GetBookAsync(Guid id)
+        public async Task<Book> GetBookAsync(Guid id)
         {
-            throw new NotImplementedException();
+			return await _unitOfWork.BookRepository.GetByIdAsync(id);
+		}
+
+        public async Task<(IList<Book> records, int total, int totalDisplay)> 
+            GetPagedBooksAsync(int pageIndex, int pageSize, string searchTitle, uint searchPriceFrom, uint searchPriceTo, string sortBy)
+        {
+            return await _unitOfWork.BookRepository.GetTableDataAsync(searchTitle,
+                searchPriceFrom, searchPriceTo, sortBy, pageIndex, pageSize);
         }
 
-        public Task<(IList<Book> records, int total, int totalDisplay)> 
-            GetPagedBooksAsync(int pageIndex, int pageSize, string searchTitle, uint searchFeesFrom, uint searchFeesTo, string sortBy)
+        public async Task UpdateBookAsync(Guid id, string title, uint price)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateBookAsync(Guid id, string title, uint fees)
-        {
-            throw new NotImplementedException();
+            var book = await GetBookAsync(id);
+            if (book is not null)
+            {
+                book.Title = title;
+                book.Price = price;
+            }
+            await _unitOfWork.SaveAsync();
         }
     }
 }

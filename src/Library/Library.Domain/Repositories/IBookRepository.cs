@@ -11,8 +11,8 @@ namespace Library.Domain.Repositories
     {
 
         Task<(IList<Book> records, int total, int totalDisplay)>
-            GetTableDataAsync(string searchTitle, uint searchFeesFrom,
-                uint searchFeesTo, string orderBy, int pageIndex, int pageSize);
+            GetTableDataAsync(string searchTitle, uint searchPriceFrom,
+                uint searchPriceTo, string orderBy, int pageIndex, int pageSize);
 
     }
 }

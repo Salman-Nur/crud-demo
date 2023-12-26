@@ -10,7 +10,7 @@ namespace Library.Domain.Features.Catalog
 
 		Task<(IList<Book> records, int total, int totalDisplay)>
 			GetPagedBooksAsync(int pageIndex, int pageSize, string searchTitle,
-			uint searchFeesFrom, uint searchFeesTo, string sortBy);
-		Task UpdateBookAsync(Guid id, string title, uint fees);
+			uint searchPriceFrom, uint searchPriceTo, string sortBy);
+		Task UpdateBookAsync(Guid id, string title, uint price);
     }
 }

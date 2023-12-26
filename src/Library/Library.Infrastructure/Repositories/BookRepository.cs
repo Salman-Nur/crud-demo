@@ -16,10 +16,17 @@ namespace Library.Infrastructure.Repositories
         {
         }
 
-		public Task<(IList<Book> records, int total, int totalDisplay)> 
-			GetTableDataAsync(string searchTitle, uint searchFeesFrom, uint searchFeesTo, string orderBy, int pageIndex, int pageSize)
+		public async Task<(IList<Book> records, int total, int totalDisplay)> 
+			GetTableDataAsync(string searchTitle, uint searchPriceFrom, uint searchPriceTo, string orderBy, int pageIndex, int pageSize)
 		{
-			throw new NotImplementedException();
-		}
+            Expression<Func<Book, bool>> expression = null;
+
+            if (!string.IsNullOrWhiteSpace(searchTitle))
+                expression = x => x.Title.Contains(searchTitle) &&
+                (x.Price >= searchPriceFrom && x.Price <= searchPriceTo);
+
+            return await GetDynamicAsync(expression,
+                orderBy, null, pageIndex, pageSize, true);
+        }
 	}
 }
