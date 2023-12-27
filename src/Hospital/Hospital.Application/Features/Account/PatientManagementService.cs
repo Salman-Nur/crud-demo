@@ -27,24 +27,34 @@ namespace Hospital.Application.Features.Account
             await _unitOfWork.SaveAsync();
         }
 
-        public Task DeletePatientAsync(Guid id)
+        public async Task DeletePatientAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.PatientRepository.RemoveAsync(id);
+            await _unitOfWork.SaveAsync();
         }
 
-        public Task<(IList<Patient> records, int total, int totalDisplay)> GetPagedPatientsAsync(int pageIndex, int pageSize, string searchName, double searchAgeFrom, double searchAgeTo, string sortBy)
+        public async Task<(IList<Patient> records, int total, int totalDisplay)> GetPagedPatientsAsync(
+            int pageIndex, int pageSize, string searchName, double searchAgeFrom, double searchAgeTo, string sortBy)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.PatientRepository.GetTableDataAsync(searchName, searchAgeFrom, searchAgeTo, 
+                sortBy, pageIndex, pageSize);
         }
 
-        public Task<Patient> GetPatientAsync(Guid id)
+        public async Task<Patient> GetPatientAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.PatientRepository.GetByIdAsync(id);
         }
 
-        public Task UpdatePatientAsync(Guid id, string name, double age, uint bill)
+        public async Task UpdatePatientAsync(Guid id, string name, double age, uint bill)
         {
-            throw new NotImplementedException();
+            var patient = await GetPatientAsync(id);
+            if (patient is not null)
+            {
+                patient.Name = name;
+                patient.Age = age;
+                patient.Bill = bill;
+            }
+            await _unitOfWork.SaveAsync();
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,9 +16,16 @@ namespace Hospital.Infrastructure.Repositories
         {
             
         }
-        public Task<(IList<Patient> records, int total, int totalDisplay)> GetTableDataAsync(string searchName, double searchAgeFrom, double searchAgeTo, string orderBy, int pageIndex, int pageSize)
+        public async Task<(IList<Patient> records, int total, int totalDisplay)> GetTableDataAsync(
+            string searchName, double searchAgeFrom, double searchAgeTo, string orderBy, int pageIndex, int pageSize)
         {
-            throw new NotImplementedException();
+            Expression<Func<Patient, bool>> expression = null;
+            if(!string.IsNullOrWhiteSpace(searchName))
+            {
+                expression = x => x.Name.Contains(searchName) &&
+                (x.Age >= searchAgeFrom && x.Age <= searchAgeTo);
+            }
+            return await GetDynamicAsync(expression, orderBy, null, pageIndex, pageSize, true);
         }
     }
 }

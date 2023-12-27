@@ -8,6 +8,8 @@ namespace Hospital.Web
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<PatientCreateModel>().AsSelf();
+            builder.RegisterType<PatientListModel>().AsSelf();
+            builder.RegisterType<PatientUpdateModel>().AsSelf();
         }
     }
 }

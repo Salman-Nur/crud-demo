@@ -2,6 +2,7 @@
 using Hospital.Infrastructure;
 using Hospital.Web.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace Hospital.Web.Areas.Admin.Controllers
@@ -42,6 +43,55 @@ namespace Hospital.Web.Areas.Admin.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> GetPatients(PatientListModel model)
+        {
+            var dataTablesModel = new DataTablesAjaxRequestUtility(Request);
+            model.Resolve(_scope);
+            var data = await model.GetPagedPatientsAsync(dataTablesModel);
+            return Json(data);
+        }
+        public async Task<IActionResult> Update(Guid id)
+        {
+            var model = _scope.Resolve<PatientUpdateModel>();
+            await model.LoadAsync(id);
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(PatientUpdateModel model)
+        {
+            model.Resolve(_scope);
+            if (ModelState.IsValid)
+            {
+                await model.UpdatePatientAsync();
+                TempData.Put("ResponseMessage", new ResponseModel
+                {
+                    Message = "Patient edited successfully.",
+                    Type = ResponseTypes.Success
+                });
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
+
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var model = _scope.Resolve<PatientListModel>();
+            if (ModelState.IsValid)
+            {
+                await model.DeletePatientAsync(id);
+                TempData.Put("ResponseMessage", new ResponseModel
+                {
+                    Message = "Patient deleted successfully.",
+                    Type = ResponseTypes.Success
+                });
+            }
+            return RedirectToAction("Index");
         }
     }
 }
