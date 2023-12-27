@@ -1,8 +1,5 @@
-﻿
-
-using Autofac;
+﻿using Autofac;
 using Hospital.Web.Areas.Admin.Models;
-using System;
 
 namespace Hospital.Web
 {
@@ -11,7 +8,6 @@ namespace Hospital.Web
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<PatientCreateModel>().AsSelf();
-            builder.RegisterType<PatientListModel>().AsSelf();
         }
     }
 }

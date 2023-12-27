@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-Hospital.Web-e2174e2e-ec2b-4f85-ac17-d64828a693a3</UserSecretsId>
+    <UserSecretsId>aspnet-Hospital.Web-f0597bff-3f36-45a3-a405-1130c8dd264e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

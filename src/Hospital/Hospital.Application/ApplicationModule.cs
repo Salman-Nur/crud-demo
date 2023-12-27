@@ -1,6 +1,6 @@
 ﻿using Autofac;
-using Hospital.Application.Features.Accounts;
-using Hospital.Domain.Features.Accounts;
+using Hospital.Application.Features.Account;
+using Hospital.Domain.Features.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace Hospital.Application
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<PatientService>().As<IPatientService>()
+            builder.RegisterType<PatientManagementService>().As<IPatientManagementService>()
                 .InstancePerLifetimeScope();
         }
     }

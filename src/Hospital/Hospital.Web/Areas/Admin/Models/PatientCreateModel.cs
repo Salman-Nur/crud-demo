@@ -1,32 +1,30 @@
-﻿
-using Autofac;
-using Hospital.Domain.Features.Accounts;
+﻿using Autofac;
+using Hospital.Domain.Features.Account;
 
 namespace Hospital.Web.Areas.Admin.Models
 {
     public class PatientCreateModel
     {
         private ILifetimeScope _scope;
-        private IPatientService _patientService;
+        private IPatientManagementService _patientManagementService;
         public string Name { get; set; }
-        public double Bill { get; set; }
-
-        public PatientCreateModel() { }
-
-        public PatientCreateModel(IPatientService patientService)
+        public double Age { get; set; }
+        public uint Bill { get; set; }
+        public PatientCreateModel()
         {
-            _patientService = patientService;
         }
-
+        public PatientCreateModel(IPatientManagementService patientManagementService)
+        {
+            _patientManagementService = patientManagementService;
+        }
         internal void Resolve(ILifetimeScope scope)
         {
             _scope = scope;
-            _patientService = _scope.Resolve<IPatientService>();
+            _patientManagementService = _scope.Resolve<IPatientManagementService>();
         }
-
-        internal async Task CreatePatientAsync()
+        internal async Task CreateBookAsync()
         {
-            await _patientService.CreatePatientAsync(Name, Bill);
+            await _patientManagementService.CreatePatientAsync(Name, Age, Bill);
         }
     }
 }

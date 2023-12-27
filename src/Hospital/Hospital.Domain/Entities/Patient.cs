@@ -10,6 +10,7 @@ namespace Hospital.Domain.Entities
     {
         public Guid Id {  get; set; }
         public string Name { get; set; }
-        public double Bill { get; set; }
+        public double Age { get; set; }
+        public uint Bill { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Hospital.Web.Data.Migrations
+namespace WebApplication1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -28,8 +28,11 @@ namespace Hospital.Web.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Bill")
+                    b.Property<double>("Age")
                         .HasColumnType("float");
+
+                    b.Property<long>("Bill")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()

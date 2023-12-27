@@ -11,28 +11,13 @@ namespace Hospital.Infrastructure.Repositories
 {
     public class PatientRepository : Repository<Patient, Guid>, IPatientRepository
     {
-        public PatientRepository(ApplicationDbContext context) : base(context)
+        public PatientRepository(IApplicationDbContext context) : base((DbContext)context)
         {
+            
         }
-
-        public async Task<bool> IsNameDuplicateAsync(string name, Guid? id = null)
+        public Task<(IList<Patient> records, int total, int totalDisplay)> GetTableDataAsync(string searchName, double searchAgeFrom, double searchAgeTo, string orderBy, int pageIndex, int pageSize)
         {
-            if (id.HasValue)
-            {
-                return (await GetCountAsync(x => x.Id != id.Value && x.Name == name)) > 0;
-            }
-            else
-            {
-                return (await GetCountAsync(x => x.Name == name)) > 0;
-            }
-        }
-
-        public async Task<(IList<Patient> records, int total, int totalDisplay)>
-            GetTableDataAsync(string searchText, string orderBy,
-                int pageIndex, int pageSize)
-        {
-            return await GetDynamicAsync(x => x.Name.Contains(searchText),
-                orderBy, null, pageIndex, pageSize, true);
+            throw new NotImplementedException();
         }
     }
 }

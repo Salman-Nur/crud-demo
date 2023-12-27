@@ -1,15 +1,14 @@
-using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Hospital.Application;
-using Hospital.Infrastructure;
+using Autofac;
 using Hospital.Web;
-using Hospital.Web.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
+using Hospital.Infrastructure;
+using Hospital.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((ctx, lc) => lc
@@ -31,6 +30,7 @@ try
         containerBuilder.RegisterModule(new InfrastructureModule(connectionString, migrationAssembly));
         containerBuilder.RegisterModule(new WebModule());
     });
+
     // Add services to the container.
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(connectionString,
@@ -40,6 +40,7 @@ try
     builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
         .AddEntityFrameworkStores<ApplicationDbContext>();
     builder.Services.AddControllersWithViews();
+
 
     var app = builder.Build();
 
@@ -71,12 +72,12 @@ try
         pattern: "{controller=Home}/{action=Index}/{id?}");
     app.MapRazorPages();
 
-    Log.Information("Application starting...");
+    Log.Information("Starting");
     app.Run();
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Failed to start application.");
+    Log.Fatal(ex, "Failed");
 }
 finally
 {

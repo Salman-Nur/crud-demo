@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Hospital.Application;
-using Hospital.Application.Features.Accounts;
-using Hospital.Domain.Features.Accounts;
+using Hospital.Application.Features.Account;
+using Hospital.Domain.Features.Account;
 using Hospital.Domain.Repositories;
 using Hospital.Infrastructure.Repositories;
 using System;

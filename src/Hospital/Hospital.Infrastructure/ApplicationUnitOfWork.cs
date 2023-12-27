@@ -15,7 +15,7 @@ namespace Hospital.Infrastructure
         public IPatientRepository PatientRepository { get; private set; }
 
         public ApplicationUnitOfWork(IPatientRepository patientRepository, 
-            ApplicationDbContext dbContext) : base(dbContext)
+            IApplicationDbContext dbContext) : base((DbContext)dbContext)
         {
             PatientRepository = patientRepository;
         }
