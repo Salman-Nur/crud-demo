@@ -1,8 +1,8 @@
-﻿using Exam1.Web.Models;
+﻿using FirstDemo.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Exam1.Web.Controllers
+namespace FirstDemo.Web.Controllers
 {
     public class HomeController : Controller
     {
