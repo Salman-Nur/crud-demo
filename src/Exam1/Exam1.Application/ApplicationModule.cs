@@ -8,7 +8,7 @@ namespace Exam1.Application
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<ProductManagementService>().As<IProductManagementService>()
-                .InstancePerLifetimeScope();
+                   .InstancePerLifetimeScope();
         }
     }
 }
