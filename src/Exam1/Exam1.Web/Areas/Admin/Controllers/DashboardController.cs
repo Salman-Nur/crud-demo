@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace FirstDemo.Web.Areas.Admin.Controllers
+namespace Exam1.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class DashboardController : Controller
@@ -11,3 +11,5 @@ namespace FirstDemo.Web.Areas.Admin.Controllers
         }
     }
 }
+
+

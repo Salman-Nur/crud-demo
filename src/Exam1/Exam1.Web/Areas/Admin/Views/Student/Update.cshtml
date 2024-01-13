@@ -1,0 +1,42 @@
+﻿@model StudentUpdateModel
+@{
+    ViewData["Title"] = "Update";
+}
+
+<div class="col-md-12">
+    <!-- general form elements -->
+    <div class="card card-primary">
+        <partial name="_ResponsePartial" />
+        <div class="card-header">
+            <h3 class="card-title">Update existing Student</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form asp-action="Update" asp-controller="Student" asp-area="Admin"
+              asp-antiforgery="true">
+            <input type="hidden" asp-for="Id" />
+            <div class="card-body">
+                <div class="form-group">
+                    <label asp-for="Name">Name</label>
+                    <input type="text" class="form-control" asp-for="Name">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Fees">Fees</label>
+                    <input type="number" class="form-control" asp-for="Fees" min="0">
+                </div>
+                <div class="form-group">
+                    <label asp-for="CGPA">CGPA</label>
+                    <input type="number" class="form-control" asp-for="CGPA">
+                </div>
+            </div>
+            <!-- /.card-body -->
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+    <!-- /.card -->
+</div>
+
+
